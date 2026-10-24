@@ -1,4 +1,5 @@
 package main
+
 import "fmt"
 
 
@@ -32,13 +33,16 @@ func PrintCards(card View){
 }
 
 func ViewCards(account *Accaunt){
-
 	for _, card := range account.Cards{
 		PrintCards(card)
 		fmt.Println("----------------------------")
 	}
 	for _, creditcard := range account.CreditCards{
 		PrintCards(creditcard)
+		fmt.Println("----------------------------")
+	}
+	if len(account.Cards) == 0 && len(account.CreditCards) == 0 {
+		fmt.Printf("Карт пока нет.")
 		fmt.Println("----------------------------")
 	}
 }

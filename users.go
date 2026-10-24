@@ -38,16 +38,15 @@ func NewAccaunt(bank *Bank)(err error){
 		break
 	}
 	accaunt := Accaunt{
-		Id: bank.NextId,
+		Id: bank.NextUserId,
 		Owner: Client{
 			Name: name,
 			Age: age,
 			},
 		Balanse: balans,
-		Blocked: false,
-		Cards: []Card{},		
+		Blocked: false,		
 	}
-	bank.NextId += 1
+	bank.NextUserId += 1
 	bank.Accaunts[accaunt.Id] = accaunt
 	fmt.Printf("Здравствуйте, %v!\nВаш аккаунт успешно создан!\n\n", bank.Accaunts[accaunt.Id].Owner.Name)
 return 

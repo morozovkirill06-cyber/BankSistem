@@ -13,7 +13,8 @@ func main() {
 		Name:     "GOBANK",
 		Accaunts: make(map[int]Accaunt),
 		History:  make(map[int]Tranzaction),
-		NextId:   2,
+		Cards:    make(map[int]any),
+		NextId:   1,
 	}
 	client := Client{
 		Name: "Kirill",
@@ -44,7 +45,11 @@ func main() {
 			fmt.Println("_____________________________")
 			fmt.Printf("Введите ID аккаунта: ")
 			fmt.Scan(&ids)
-			account := bank.Accaunts[ids]
+			account, ok:= bank.Accaunts[ids]
+				if ok != true{
+					fmt.Println("Аккаунт не найден")
+					continue
+				}
 			for{
 			fmt.Println("========== Аккаунт ==========")
 			fmt.Printf("ID: %v, Баланс: %v\n", account.Id, account.Balanse)
@@ -58,7 +63,7 @@ func main() {
 			fmt.Scan(&a)
 			switch a {
 			case 1:
-				NewCard(&account, &idcard)
+				NewCard(&bank, ids)
 				bank.Accaunts[ids] = account
 				continue
 			case 2:
