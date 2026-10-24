@@ -5,7 +5,6 @@ import "fmt"
 
 func main() {
 	id := 0
-	idcard := 0
 	var d int
 	var a int
 	var ids int
@@ -14,7 +13,7 @@ func main() {
 		Accaunts: make(map[int]Accaunt),
 		History:  make(map[int]Tranzaction),
 		Cards:    make(map[int]any),
-		NextId:   1,
+		NextUserId:   1,
 	}
 	client := Client{
 		Name: "Kirill",
@@ -67,12 +66,16 @@ func main() {
 				bank.Accaunts[ids] = account
 				continue
 			case 2:
+				/*
 				NewCreditCard(&account, &idcard)
 				bank.Accaunts[ids] = account
 				continue
+				*/
 			case 3:
+				/*
 				ViewCards(&account)
 				continue
+				*/
 			case 4:
 
 			default:

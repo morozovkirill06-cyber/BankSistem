@@ -17,36 +17,62 @@ func Deposit(i Deps, sum float64) (err error) {
 }
 
 
-
-func NewCard(bank *Bank, accid int){
+func NewCard(bank *Bank, accountid int){
 	newcard := Card{
-		Number: *idcard,
+		Number: bank.NextCardId,
 		Balanse: 0,
-		Accaunt: bank.Accaunts[accid].Id,
+		Accauntid: bank.Accaunts[accountid].Id,
 		IsBlocked: false,
 	}
-	bank.NaxtCardId += 1
-	account.Cards = append(account.Cards, newcard)
-	fmt.Println("Карта создана")
+	account := bank.Accaunts[accountid]
+	account.UserCards = append(account.UserCards, newcard.Number)
+	bank.Accaunts[accountid] = account
+	bank.Cards[bank.NextCardId] = newcard
+	bank.NextCardId += 1
+	fmt.Println("Карта создана!")
 }
-func NewCreditCard(account *Accaunt, idcard *int)(){ 
+
+func NewCreditCard(bank *Bank, accountid int)(){ 
 	newcreditcard := CreditCard{
-		Number: *idcard,
-		Owner: account.Owner,
-		CreditLimit: CreditLimit(account),
+		Number: bank.NextCardId,
+		Accauntid: accountid,
+		CreditLimit: CreditLimit(bank, accountid),
 		Debt: 0,
 	}
-	*idcard += 1
-	account.CreditCards = append(account.CreditCards, newcreditcard)
+	account := bank.Accaunts[accountid]
+	account.UserCards = append(account.UserCards, newcreditcard.Number)
+	bank.Accaunts[accountid] = account
+	bank.Cards[bank.NextCardId] = newcreditcard
+	bank.NextCardId += 1
 	fmt.Println("-------Карта офрмлена!-------")
 }
 
-func CreditLimit(account *Accaunt)(lim float64){
-	var debt float64
-	for _, creditcard := range account.CreditCards{
-		debt += creditcard.Debt
-	}
-	lim = account.Balanse / 2 - debt
-	
-	return
+func(creditcard CreditCard) GetMoney()(float64, float64){
+	return 0, creditcard.Debt
 }
+func(creditcard Card) GetMoney()(float64, float64){
+	return creditcard.Balanse, 0
+}
+type FinansCard interface{
+	GetMoney()(float64, float64)
+}
+func FinansInfo(i FinansCard)(float64, float64){
+	return i.GetMoney()
+}
+
+
+func CreditLimit(bank *Bank, accountid int)(lim float64){
+	bal := bank.Accaunts[accountid].Balanse
+	var debts float64 
+	var bals float64
+	for _, cardid := range bank.Accaunts[accountid].UserCards{
+		cardid := bank.Cards[cardid]
+		cid, ok := cardid.(FinansCard)
+			if ok!=true{
+				return
+			}
+		bals, debts = FinansInfo(cid)
+	}
+	lim = (bal + bals)*1.4 - debts
+	return 
+	}
