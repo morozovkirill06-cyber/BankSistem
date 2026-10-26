@@ -58,26 +58,26 @@ func main() {
 			fmt.Println("Посмотреть карты - 3")
 			fmt.Println("Удалить себя - 4")
 			fmt.Println("В главное меню - 5")
+			fmt.Println("Перевести по ID - 7")
 			fmt.Printf("Введите действие:")
 			fmt.Scan(&a)
 			switch a {
 			case 1:
 				NewCard(&bank, ids)
-				bank.Accaunts[ids] = account
 				continue
 			case 2:
-				/*
-				NewCreditCard(&account, &idcard)
-				bank.Accaunts[ids] = account
+				NewCreditCard(&bank, ids)
 				continue
-				*/
 			case 3:
-				/*
-				ViewCards(&account)
+				ViewUserCards(&bank, ids)
 				continue
-				*/
 			case 4:
 
+			case 6: //Пополнить карту с баланса аккаунта
+
+			case 7:
+				TranzactionForId(&bank, ids)
+				continue
 			default:
 			}
 			break

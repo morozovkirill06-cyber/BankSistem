@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+//Новый аккаунт
 func NewAccaunt(bank *Bank)(err error){
 	var name string
 	var age int
@@ -11,7 +12,7 @@ func NewAccaunt(bank *Bank)(err error){
 	fmt.Scan(&name)
 	for{
 		fmt.Printf("Возраст: ")
-		if _, err := fmt.Scanln(&age); err!=nil{
+		if _, err := fmt.Scan(&age); err!=nil{
 			fmt.Println("Возраст должен быть числом!")
 			continue
 		}else if age <= 0{
@@ -53,7 +54,7 @@ return
 }
 
 
-
+//Все пользователи
 func AllUsers(accaunts map[int]Accaunt){
 	fmt.Println("========= ПОЛЬЗОВАТЕЛИ =========")
 		for _, accaunt := range accaunts{

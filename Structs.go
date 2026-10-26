@@ -29,7 +29,6 @@ type Bank struct{
 
 type Card struct {
 	Number     int
-	Balanse    float64 // Номер карты
 	Accauntid  int // Владелец
 	IsBlocked  bool    // Заблокирована ли карта
 }
