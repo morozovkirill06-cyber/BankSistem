@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 
 func main() {
@@ -8,6 +10,7 @@ func main() {
 	var d int
 	var a int
 	var ids int
+	var err error
 	bank := Bank{
 		Name:     "GOBANK",
 		Accaunts: make(map[int]Accaunt),
@@ -44,19 +47,19 @@ func main() {
 			fmt.Println("_____________________________")
 			fmt.Printf("Введите ID аккаунта: ")
 			fmt.Scan(&ids)
-			account, ok:= bank.Accaunts[ids]
+			for{
+				account, ok:= bank.Accaunts[ids]
 				if ok != true{
 					fmt.Println("Аккаунт не найден")
 					continue
 				}
-			for{
 			fmt.Println("========== Аккаунт ==========")
 			fmt.Printf("ID: %v, Баланс: %v\n", account.Id, account.Balanse)
 			fmt.Printf("Имя: %v,  Возраст: %v\n", account.Owner.Name, account.Owner.Age)
 			fmt.Println("Создать карту - 1")
 			fmt.Println("Создать кредитку - 2")
 			fmt.Println("Посмотреть карты - 3")
-			fmt.Println("Удалить себя - 4")
+			fmt.Println("Пополнить карты - 4")
 			fmt.Println("В главное меню - 5")
 			fmt.Println("Перевести по ID - 7")
 			fmt.Printf("Введите действие:")
@@ -72,11 +75,14 @@ func main() {
 				ViewUserCards(&bank, ids)
 				continue
 			case 4:
-
-			case 6: //Пополнить карту с баланса аккаунта
+				err = UpDepCard(&bank)
+				if err!=nil{fmt.Println(err)}
+				continue
+			case 6: 
 
 			case 7:
-				TranzactionForId(&bank, ids)
+				err = TranzactionForId(&bank, ids)
+				if err!=nil{fmt.Println(err)}
 				continue
 			default:
 			}

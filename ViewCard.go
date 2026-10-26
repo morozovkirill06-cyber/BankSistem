@@ -31,15 +31,15 @@ func PrintCards(card View){
 }
 //Отображение информации по картам конкретного пользователя
 func ViewUserCards(bank *Bank, accountid int){
+	if len(bank.Accaunts[accountid].UserCards) == 0{
+		fmt.Println("Нет карт...")
+	}
 	for _, cid := range bank.Accaunts[accountid].UserCards{
 		card, ok := bank.Cards[cid].(View)
 			if ok == false{
 				return
 			}
 		PrintCards(card)
-	if len(bank.Accaunts[accountid].UserCards) == 0{
-		fmt.Println("Нет карт...")
-	}
 		fmt.Println("______________________________________")
 	}
 }

@@ -1,28 +1,36 @@
 package main
 
 import"fmt"
+import"errors"
 
-func TranzactionForId(bank *Bank, accountid int){
-	var sum float64
+func Sum() (sum float64) {
+		for{
+	fmt.Printf("Введите Сумму: ")
+	fmt.Scan(&sum)
+        if sum <= 0{
+			fmt.Println("Сумма меньше или 0...")
+			continue
+		}
+		break
+	}
+	return
+}
+
+
+func TranzactionForId(bank *Bank, accountid int)error{
 	var ids int
 	fmt.Printf("Введите ID аккаунта для получения средств: ")
 	fmt.Scan(&ids)
 	account1 := bank.Accaunts[accountid]
 	account2, ok:= bank.Accaunts[ids]
 		if ok != true{
-			fmt.Println("Аккаунт не найден")
-			return
+			return errors.New("Аккаунт не найден")
 		}else if ids == accountid{
-			fmt.Println("Самоме себе нельзя перевести")
-			return
+			return errors.New("Самоме себе нельзя перевести")
 		}
 	for{
-	fmt.Printf("Введите Сумму: ")
-	fmt.Scan(&sum)
-		if sum > account1.Balanse{
-			fmt.Println("Недостаточно средств...")
-			continue
-		}else if sum <= 0{
+	sum := Sum() 
+	if sum <= 0{
 			fmt.Println("Сумма меньше или 0...")
 			continue
 		}
@@ -33,20 +41,22 @@ func TranzactionForId(bank *Bank, accountid int){
 	fmt.Println("Перевод прошел успешно!")
 	break
 	}
+return nil
 }
 
-func (c *Card)UpDep(bank *Bank, sum float64){
+func (c Card)UpDep(bank *Bank, sum float64){
 id := c.Accauntid
 account := bank.Accaunts[id]
 account.Balanse +=sum
 bank.Accaunts[id] = account
 }
 
-func (ccr *CreditCard)UpDep(bank *Bank, sum float64){
+func (ccr CreditCard)UpDep(bank *Bank, sum float64){
 id := ccr.Accauntid
 account := bank.Accaunts[id]
     if ccr.Debt == sum{
 		fmt.Println("Задолжность погашена!")
+		ccr.Debt = 0
 	} else if ccr.Debt > sum {
 		ccr.Debt -= sum
 		fmt.Printf("Осталась задолжность %v\n ", ccr.Debt)
@@ -62,6 +72,20 @@ type Deposit interface{
 	UpDep(*Bank, float64)
 }
 
-func TranzactionForCard(i Deposit, bank *Bank,  sum float64){
-	i.UpDep(bank, sum)
+func UpDepCard(bank *Bank)error{
+	var cid int
+	fmt.Printf("Введите номер карты пополнения: ")
+	fmt.Scanln(&cid)
+	_, ok := bank.Cards[cid]
+		if !ok {
+			return errors.New("Карта не найдена")
+		}
+	sum := Sum()
+	card, ok := bank.Cards[cid].(Deposit)
+	if !ok{
+		return errors.New("Не верный тип")
+	}
+	card.UpDep(bank, sum)
+	bank.Cards[cid] = card
+	return nil
 }
