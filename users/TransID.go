@@ -34,6 +34,11 @@ func TranzactionForId(bank *structs.Bank, accountid int)error{
 			}
 			break
 	}
+
+		if sum > account1.Balance {
+		return errors.New("Недостаточно средств")
+		}
+		
 	account1.Balance -= sum
 	bank.Accaunts[accountid] = account1
 

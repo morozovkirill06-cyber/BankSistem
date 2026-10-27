@@ -52,6 +52,7 @@ func (ccr CreditCard)UpDep(bank *structs.Bank, sum float64){
 	}
 
 	bank.Accaunts[id] = account
+	bank.Cards[ccr.Number] = ccr
 }
 
 type Deposit interface{
@@ -89,8 +90,6 @@ func UpDepCard(bank *structs.Bank)error{
 
 	card.UpDep(bank, sum)
 
-	bank.Cards[cid] = card
-
 	return nil
 }
 
@@ -115,26 +114,15 @@ func (c Card)DownDep(bank *structs.Bank, sum float64)error{
 func (ccr CreditCard)DownDep(bank *structs.Bank, sum float64)error{
 
 	id := ccr.Accauntid
-	account := bank.Accaunts[id]
 	creditlimit := CreditLimit(bank, id)
 
-    if creditlimit < sum{
+    a := creditlimit - sum
+    if creditlimit < sum || a > sum{
 		return errors.New("Лимит превышен!")
-
-	} else if ccr.Debt > sum {
-		ccr.Debt -= sum
-		fmt.Printf("Осталась задолжность %v\n ", ccr.Debt)
-
-	} else {
-		PlusBalanc := (ccr.Debt - sum)*-1
-		account.Balance += PlusBalanc
-
-		ccr.Debt = 0
-
-		fmt.Printf("Задолжность погашена и остаток %v переведён на ваш счёт.\n", PlusBalanc )
 	}
 
-	bank.Accaunts[id] = account
+	ccr.Debt += sum
+
 	return nil
 }
 
@@ -146,11 +134,45 @@ func TranzactionForCard(bank *structs.Bank)(err error){
 
 	var getCardId int
 	var sendCardId int
+	var sum float64
 
 	fmt.Printf("Введите номер карты отправления: ")
 	fmt.Scan(&sendCardId)
+
+	sendc, ok := bank.Cards[sendCardId]
+		if !ok{
+			return
+		}
+
+	sendcard, ok := sendc.(Send)
+
 	fmt.Printf("Введите номер карты пополнения: ")
 	fmt.Scan(&getCardId)
+
+	getc, ok := bank.Cards[getCardId]
+		if !ok{
+			return
+		}
+
+	getcard, ok := getc.(Deposit)
+
+		for{
+		fmt.Printf("Введите Сумму: ")
+		fmt.Scan(&sum)
+
+			if sum <= 0{
+				fmt.Println("Сумма меньше или 0...")
+				continue
+
+			}
+			break
+	}
+
+	err = sendcard.DownDep(bank, sum)
+		if err != nil{
+			return
+		}
+	getcard.UpDep(bank, sum)
 
 
 	return
