@@ -1,12 +1,16 @@
-package main
+package users
 
-import "fmt"
+import (
+	"fmt"
+	"bank/structs"
+)
+
 
 //Новый аккаунт
-func NewAccaunt(bank *Bank)(err error){
+func NewAccaunt(bank *structs.Bank)(err error){
 	var name string
 	var age int
-	var balans float64 
+	var balance float64 
 	fmt.Println("Создание нового пользователя.")
 	fmt.Printf("Имя: ")
 	fmt.Scan(&name)
@@ -26,25 +30,25 @@ func NewAccaunt(bank *Bank)(err error){
 	}
 	for{
 		fmt.Printf("Баланс: ")
-		if _, err := fmt.Scan(&balans); err!=nil{
+		if _, err := fmt.Scan(&balance); err!=nil{
 		fmt.Println("Баланс должен быть числом!")
 		continue
-		}else if balans == 0{
+		}else if balance == 0{
 			fmt.Println("Ты студент? Соболезную...")
 			break
-		}else if balans < 0{
+		}else if balance < 0{
 			fmt.Println("Баланс не может быть отрицательным")
 			continue
 		}
 		break
 	}
-	accaunt := Accaunt{
+	accaunt := structs.Accaunt{
 		Id: bank.NextUserId,
-		Owner: Client{
+		Owner: structs.Client{
 			Name: name,
 			Age: age,
 			},
-		Balanse: balans,
+		Balance: balance,
 		Blocked: false,		
 	}
 	bank.NextUserId += 1
@@ -55,10 +59,10 @@ return
 
 
 //Все пользователи
-func AllUsers(accaunts map[int]Accaunt){
+func AllUsers(accaunts map[int]structs.Accaunt){
 	fmt.Println("========= ПОЛЬЗОВАТЕЛИ =========")
 		for _, accaunt := range accaunts{
-			fmt.Printf("ID: %v, Баланс: %v\n", accaunt.Id, accaunt.Balanse)
+			fmt.Printf("ID: %v, Баланс: %v\n", accaunt.Id, accaunt.Balance)
 			fmt.Printf("Имя: %v,  Возраст: %v\n", accaunt.Owner.Name, accaunt.Owner.Age)
 			fmt.Println("--------------------------------")
 	}

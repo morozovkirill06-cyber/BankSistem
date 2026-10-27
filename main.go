@@ -1,6 +1,9 @@
 package main
 
 import (
+	"bank/cards"
+	"bank/structs"
+	"bank/users"
 	"fmt"
 )
 
@@ -11,24 +14,28 @@ func main() {
 	var a int
 	var ids int
 	var err error
-	bank := Bank{
+
+	bank := structs.Bank{
 		Name:     "GOBANK",
-		Accaunts: make(map[int]Accaunt),
-		History:  make(map[int]Tranzaction),
+		Accaunts: make(map[int]structs.Accaunt),
+		History:  make(map[int]structs.Tranzaction),
 		Cards:    make(map[int]any),
 		NextUserId:   1,
 	}
-	client := Client{
+
+	client := structs.Client{
 		Name: "Kirill",
 		Age:  19,
 	}
-	account := Accaunt{
+
+	account := structs.Accaunt{
 		Id:      id,
 		Owner:   client,
-		Balanse: 1000,
+		Balance: 1000,
 		Blocked: false,
 	}
 	bank.Accaunts[id] = account
+
 	for{
 		fmt.Println("========== Главное меню ==========")
 		fmt.Println("Создать пользователя - 1")
@@ -36,25 +43,28 @@ func main() {
 		fmt.Println("Войти в аккаунт - 3")
 		fmt.Printf("Номер действия:")
 		fmt.Scan(&d)
+
 		switch d {
 		case 1:
-			NewAccaunt(&bank)
+			users.NewAccaunt(&bank)
 			
 		case 2:
-			AllUsers(bank.Accaunts)
+			users.AllUsers(bank.Accaunts)
 
 		case 3:
 			fmt.Println("_____________________________")
 			fmt.Printf("Введите ID аккаунта: ")
 			fmt.Scan(&ids)
+
 			for{
 				account, ok:= bank.Accaunts[ids]
 				if ok != true{
 					fmt.Println("Аккаунт не найден")
-					continue
+					break
 				}
+
 			fmt.Println("========== Аккаунт ==========")
-			fmt.Printf("ID: %v, Баланс: %v\n", account.Id, account.Balanse)
+			fmt.Printf("ID: %v, Баланс: %v\n", account.Id, account.Balance)
 			fmt.Printf("Имя: %v,  Возраст: %v\n", account.Owner.Name, account.Owner.Age)
 			fmt.Println("Создать карту - 1")
 			fmt.Println("Создать кредитку - 2")
@@ -64,34 +74,43 @@ func main() {
 			fmt.Println("Перевести по ID - 7")
 			fmt.Printf("Введите действие:")
 			fmt.Scan(&a)
+
 			switch a {
+
 			case 1:
-				NewCard(&bank, ids)
+				cards.NewCard(&bank, ids)
 				continue
+
 			case 2:
-				NewCreditCard(&bank, ids)
+				cards.NewCreditCard(&bank, ids)
 				continue
+
 			case 3:
-				ViewUserCards(&bank, ids)
+				cards.ViewUserCards(&bank, ids)
 				continue
+
 			case 4:
-				err = UpDepCard(&bank)
+				err = cards.UpDepCard(&bank)
 				if err!=nil{fmt.Println(err)}
 				continue
+
 			case 6: 
 
 			case 7:
-				err = TranzactionForId(&bank, ids)
+				err = users.TranzactionForId(&bank, ids)
 				if err!=nil{fmt.Println(err)}
 				continue
+
 			default:
 			}
 			break
 		}	
 		continue
+
 		case 4:
 		}
 
 	}
 }
+
 

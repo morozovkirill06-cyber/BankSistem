@@ -1,6 +1,9 @@
-package main
+package cards
 
-import "fmt"
+import ( 
+	"fmt"
+	"bank/structs"
+)
 
 //Информация по картам
 func (card Card) ViewCard(){
@@ -30,7 +33,7 @@ func PrintCards(card View){
 	card.ViewCard()
 }
 //Отображение информации по картам конкретного пользователя
-func ViewUserCards(bank *Bank, accountid int){
+func ViewUserCards(bank *structs.Bank, accountid int){
 	if len(bank.Accaunts[accountid].UserCards) == 0{
 		fmt.Println("Нет карт...")
 	}
