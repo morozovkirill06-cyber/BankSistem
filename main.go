@@ -2,39 +2,18 @@ package main
 
 import (
 	"bank/cards"
-	"bank/structs"
 	"bank/users"
 	"fmt"
 )
 
 
 func main() {
-	id := 0
 	var d int
 	var a int
 	var ids int
 	var err error
 
-	bank := structs.Bank{
-		Name:     "GOBANK",
-		Accaunts: make(map[int]structs.Accaunt),
-		History:  make(map[int]structs.Tranzaction),
-		Cards:    make(map[int]any),
-		NextUserId:   1,
-	}
-
-	client := structs.Client{
-		Name: "Kirill",
-		Age:  19,
-	}
-
-	account := structs.Accaunt{
-		Id:      id,
-		Owner:   client,
-		Balance: 1000,
-		Blocked: false,
-	}
-	bank.Accaunts[id] = account
+	bank := bb()
 
 	for{
 		fmt.Println("========== Главное меню ==========")

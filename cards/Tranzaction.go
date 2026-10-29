@@ -116,8 +116,8 @@ func (ccr CreditCard)DownDep(bank *structs.Bank, sum float64)error{
 	id := ccr.Accauntid
 	creditlimit := CreditLimit(bank, id)
 
-    a := creditlimit - sum
-    if creditlimit < sum || a > sum{
+    a := creditlimit - ccr.Debt
+    if a < sum{
 		return errors.New("Лимит превышен!")
 	}
 

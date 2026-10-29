@@ -53,6 +53,7 @@ func NewAccaunt(bank *structs.Bank)(err error){
 	}
 	bank.NextUserId += 1
 	bank.Accaunts[accaunt.Id] = accaunt
+
 	fmt.Printf("Здравствуйте, %v!\nВаш аккаунт успешно создан!\n\n", bank.Accaunts[accaunt.Id].Owner.Name)
 return 
 }

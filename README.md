@@ -1,29 +1,34 @@
-# BankSistem
+
 
 main.go запуск и меню
 
-users.go
+    users.go
+        NewAccaunt: создание аккаунта
+        AllUsers: список пользователей
+cards
+    NewCards.go
+        NewCard: создание дебетовой карты
+        NewCreditCard: создание кредитки
+        CreditLimit: расчёт лимита кредитки
 
-NewAccaunt: создание аккаунта
-AllUsers: список пользователей
+    Tranzaction.go
+        Card.UpDep, CreditCard.UpDep: пополнение
+        UpDepCard: выбор карты для пополнении
+        Card.DownDep, CreditCard.DownDep: снятие
+        DownDepCard: выбор карты для снятия
 
-NewCards.go
+    ViewCard.go
+        Card.ViewCard, CreditCard.ViewCard: информация о карте
+        PrintCards: вывод карты 
+        ViewUserCards: карты пользователя.
 
-NewCard: создание дебетовой карты
-NewCreditCard: создание кредитки
-CreditLimit: расчёт лимита кредитки
+users
+    TransID.go
+        TranzactionForId: перевод по ID пользователей
+    
+    Users.go
+        NewAccaunt: новый пользователь
+        Allusers: все пользователи 
 
-ViewCard.go
-
-Card.ViewCard, CreditCard.ViewCard: информация о карте
-PrintCards: вывод карты 
-ViewUserCards: карты пользователя.
-
-Tranzaction.go
-
-Sum: ввод\ввод суммы
-TranzactionForId: перевод по ID пользователей
-Card.UpDep, CreditCard.UpDep: пополнение
-UpDepCard: выбор карты для пополнении
-
-Structs.go структуры данных
+structs
+    Structs.go структуры данных
