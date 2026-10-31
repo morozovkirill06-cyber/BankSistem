@@ -1,11 +1,12 @@
 package main
 
 import (
+	"bank/data"
 	"bank/cards"
 	"bank/users"
+	"bank/structs"
 	"fmt"
 )
-
 
 func main() {
 	var d int
@@ -13,9 +14,23 @@ func main() {
 	var ids int
 	var err error
 
-	bank := bb()
+		bank := structs.Bank{
+			Name:     "GOBANK",
+			Accaunts:	 make(map[int]structs.Accaunt),
+			History: 	 make(map[int]structs.Tranzaction),
+			Cards:       make(map[int]any),
+			NextUserId:  1,
+			NextCardId:  1,
+		}
 
-	for{
+		err = data.ReadFileJson(&bank)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+	for {
+		
+
 		fmt.Println("========== Главное меню ==========")
 		fmt.Println("Создать пользователя - 1")
 		fmt.Println("Все пользователи - 2")
@@ -27,7 +42,14 @@ func main() {
 		switch d {
 		case 1:
 			users.NewAccaunt(&bank)
-			
+
+			err = data.SaveFileJson(&bank)
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			continue
+
 		case 2:
 			users.AllUsers(bank.Accaunts)
 
@@ -36,12 +58,12 @@ func main() {
 			fmt.Printf("Введите ID аккаунта: ")
 			fmt.Scan(&ids)
 
-			for{
-					account, ok:= bank.Accaunts[ids]
-					if ok != true{
-						fmt.Println("Аккаунт не найден")
-						break
-					}
+			for {
+				account, ok := bank.Accaunts[ids]
+				if ok != true {
+					fmt.Println("Аккаунт не найден")
+					break
+				}
 
 				fmt.Println("========== Аккаунт ==========")
 				fmt.Printf("ID: %v, Баланс: %v\n", account.Id, account.Balance)
@@ -59,10 +81,26 @@ func main() {
 
 				case 1:
 					cards.NewCard(&bank, ids)
+
+					err = data.SaveFileJson(&bank)
+					if err != nil {
+						fmt.Println(err)
+						break
+					}
+
 					continue
 
 				case 2:
 					cards.NewCreditCard(&bank, ids)
+					
+					fmt.Println("-------Карта офрмлена!-------")
+
+					err = data.SaveFileJson(&bank)
+					if err != nil {
+						fmt.Println(err)
+						break
+					}
+
 					continue
 
 				case 3:
@@ -71,31 +109,55 @@ func main() {
 
 				case 4:
 					err = cards.UpDepCard(&bank)
-					if err!=nil{fmt.Println(err)}
+
+					if err != nil {
+						fmt.Println(err)
+						continue
+					}
+
+					err = data.SaveFileJson(&bank)
+						if err != nil {
+							fmt.Println(err)
+							break
+						}
 					continue
 
-				case 6: 
+				case 6:
 
 				case 7:
 					err = users.TranzactionForId(&bank, ids)
-					if err!=nil{fmt.Println(err)}
+					if err != nil {
+						fmt.Println(err)
+					}
+
+					err = data.SaveFileJson(&bank)
+					if err != nil {
+						fmt.Println(err)
+						break
+					}
+
 					continue
 
 				default:
 				}
 				break
-			}	
+			}
 			continue
 
 		case 4:
-				err = cards.TranzactionForCard(&bank)
-				if err != nil {
-					fmt.Println(err)
-				}
-				continue
+			err = cards.TranzactionForCard(&bank)
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			err = data.SaveFileJson(&bank)
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+
+			continue
 		}
 
 	}
 }
-
-

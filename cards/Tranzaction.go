@@ -7,12 +7,14 @@ import(
 )
 
 type Card struct {
-	Number     int
-	Accauntid  int // Владелец
-	IsBlocked  bool    // Заблокирована ли карта
+	Number      int
+	Type        string
+	Accauntid   int // Владелец
+	IsBlocked   bool    // Заблокирована ли карта
 }
 type CreditCard struct {
 	Number      int  // Номер карты
+	Type        string
 	Accauntid   int  // Владелец
 	CreditLimit float64 // Кредитный лимит
 	Debt        float64 // Задолженность
@@ -107,6 +109,7 @@ func (c Card)DownDep(bank *structs.Bank, sum float64)error{
 	account.Balance -= sum
 
 	bank.Accaunts[id] = account
+	
 	return nil
 	}
 
@@ -122,6 +125,8 @@ func (ccr CreditCard)DownDep(bank *structs.Bank, sum float64)error{
 	}
 
 	ccr.Debt += sum
+
+	bank.Cards[ccr.Number] = ccr
 
 	return nil
 }
@@ -141,7 +146,7 @@ func TranzactionForCard(bank *structs.Bank)(err error){
 
 	sendc, ok := bank.Cards[sendCardId]
 		if !ok{
-			return
+			return err
 		}
 
 	sendcard, ok := sendc.(Send)

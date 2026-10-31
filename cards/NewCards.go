@@ -10,6 +10,7 @@ func NewCard(bank *structs.Bank, accountid int){
 
 	newcard := Card{
 		Number: bank.NextCardId,
+		Type: "Debit",
 		Accauntid: bank.Accaunts[accountid].Id,
 		IsBlocked: false,
 	}
@@ -30,6 +31,7 @@ func NewCreditCard(bank *structs.Bank, accountid int)(){
 
 	newcreditcard := CreditCard{
 		Number: bank.NextCardId,
+		Type: "Credit",
 		Accauntid: accountid,
 		CreditLimit: CreditLimit(bank, accountid),
 		Debt: 0,

@@ -1,0 +1,65 @@
+{
+    "Name": "GOBANK",
+    "Accaunts": {
+        "1": {
+            "Id": 1,
+            "Owner": {
+                "Name": "Kirill",
+                "Age": 19
+            },
+            "Balance": 2000,
+            "Blocked": false,
+            "UserCards": [
+                1,
+                2,
+                3
+            ]
+        },
+        "2": {
+            "Id": 2,
+            "Owner": {
+                "Name": "Dmitry",
+                "Age": 27
+            },
+            "Balance": 1000,
+            "Blocked": false,
+            "UserCards": null
+        },
+        "3": {
+            "Id": 3,
+            "Owner": {
+                "Name": "Maksim",
+                "Age": 20
+            },
+            "Balance": 500,
+            "Blocked": false,
+            "UserCards": null
+        }
+    },
+    "History": {},
+    "Cards": {
+        "1": {
+            "Number": 1,
+            "Type": "Debit",
+            "Accauntid": 1,
+            "IsBlocked": false
+        },
+        "2": {
+            "Number": 2,
+            "Type": "Debit",
+            "Accauntid": 1,
+            "IsBlocked": false
+        },
+        "3": {
+            "Number": 3,
+            "Type": "Credit",
+            "Accauntid": 1,
+            "CreditLimit": 2800,
+            "Debt": 0
+        }
+    },
+    "DebitCardid": null,
+    "CreditCardCardid": null,
+    "NextUserId": 4,
+    "NextCardId": 4
+}
